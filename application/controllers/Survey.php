@@ -98,7 +98,7 @@ class Survey extends CI_Controller {
 		$kwh       = $this->input->get_post('Kwh');
 		$mcb       = $this->input->get_post('Mcb');
 		$grnd      = $this->input->get_post('Ground');
-		$kondisi   = $this->input->get_post('Cospi');
+		$cospi   = $this->input->get_post('Cospi');
 		$standm    = $this->input->get_post('Stand');
 		$batas     = $this->input->get_post('Batas');
 		$switch    = $this->input->get_post('Switch');
@@ -117,6 +117,10 @@ class Survey extends CI_Controller {
 		$jml_lp    = $this->input->get_post('Jumlah');
 		$jml_mcb   = $this->input->get_post('JumlahMCB');
 		$kontaktor = $this->input->get_post('Kontaktor');
+		$voltampere = $this->input->get_post('VoltAmpere');
+		$daya = $this->input->get_post('Daya');
+		$watt = $this->input->get_post('Watt');
+
 
 
 
@@ -174,6 +178,10 @@ class Survey extends CI_Controller {
 				'JumlahLampu'  => $jml_lp,
 				'JumlahMCB'    => $jml_mcb,
 				'Kontaktor'    => $kontaktor,
+				'CosPhi'	=> $cospi,
+				'VoltAmpere'    => $voltampere,
+				'Daya'    => $daya,
+				'Watt'    => $watt,
 			);
 
 			$survey = $this->m_survey->update_data($where,$data,'Survey');
@@ -181,6 +189,95 @@ class Survey extends CI_Controller {
 			echo $this->toJsonData(200,'Success',$survey);
 			return;
 		}
+
+	}
+
+	public function savenewsurvey(){
+
+		$no        = $this->input->get_post('No');
+		$id_pel    = $this->input->get_post('Id_Pel');
+		$nama        = $this->input->get_post('Nama');
+		$alamat        = $this->input->get_post('Alamat');
+		$kwh       = $this->input->get_post('Kwh');
+		$mcb       = $this->input->get_post('Mcb');
+		$grnd      = $this->input->get_post('Ground');
+		$cospi   = $this->input->get_post('Cospi');
+		$standm    = $this->input->get_post('Stand');
+		$batas     = $this->input->get_post('Batas');
+		$switch    = $this->input->get_post('Switch');
+		$tgl       = $this->input->get_post('Tanggal');
+		$lat       = $this->input->get_post('Lat');
+		$ampere    = $this->input->get_post('Amp');
+		$kabkot    = $this->input->get_post('Kd_Kabupaten');
+		$nama      = $this->input->get_post('Nama');
+		$kondisi   = $this->input->get_post('Kondisi');
+		$wilayah   = $this->input->get_post('Wilayah');
+		$prov      = $this->input->get_post('Kd_Provinsi');
+		$lon       = $this->input->get_post('Long');
+		$ket       = $this->input->get_post('Ket');
+		$alamat    = $this->input->get_post('Alamat');
+		$kec       = $this->input->get_post('Kd_Kecamatan');
+		$jml_lp    = $this->input->get_post('Jumlah');
+		$jml_mcb   = $this->input->get_post('JumlahMCB');
+		$kontaktor = $this->input->get_post('Kontaktor');
+		$voltampere = $this->input->get_post('VoltAmpere');
+		$daya = $this->input->get_post('Daya');
+		$watt = $this->input->get_post('Watt');
+
+		if (!empty($_FILES['Foto']['name'])) {
+			$filename = 'assets/'.$id_pel.".jpg";
+
+			if (file_exists($filename)) {
+				unlink('assets/'.$id_pel.".jpg");
+			}
+
+			$upload 	= $this->upload('./assets/','Foto',$id_pel);
+
+
+			if($upload['auth']	== false){
+				echo $this->toJsonData(404,$upload['msg']);
+				return;
+			}
+
+
+			$fotoname 	= $upload['msg']['file_name'];
+			if(!empty($fotoname)){
+				// remFile(base_url().'assets/'.$id_pel.".jpg");
+				delete_files(base_url().'assets/'.$id_pel.".jpg");
+			}
+		}
+
+			$data = array(
+				'NoUrut' => $no,
+				'IDPel' => $id_pel,
+				'KWhMeter'     => $kwh,
+				'MCB'          => $mcb,
+				'Grounding'    => $grnd,
+				'KondisiBox'   => $kondisi,
+				'StandKWH1'    => $standm,
+				'PembatasDaya' => $batas,
+				'Switchs'      => $switch,
+				'Tanggal1'     => $tgl,
+				'Latitude'     => $lat,
+				'Amphere'      => $ampere,
+				'Nama'      => $nama,
+				'Alamat'      => $alamat,
+				'Longitude'    => $lon,
+				'Keterangan'   => $ket,
+				'JumlahLampu'  => $jml_lp,
+				'JumlahMCB'    => $jml_mcb,
+				'Kontaktor'    => $kontaktor,
+				'CosPhi'	=> $cospi,
+				'VoltAmpere'    => $voltampere,
+				'Daya'    => $daya,
+				'Watt'    => $watt,
+			);
+
+			$survey = $this->m_survey->input_data($data,'Survey');
+
+			echo $this->toJsonData(200,'Success',$survey);
+			return;
+		
 
 	}
 

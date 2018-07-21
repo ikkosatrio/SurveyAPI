@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/survey/';
+$config['base_url'] = 'http://172.17.0.51/db/';
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ $config['base_url'] = 'http://localhost/survey/';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'http://localhost/survey/';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------

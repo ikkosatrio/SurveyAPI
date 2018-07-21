@@ -25,9 +25,7 @@
 														<h5 class="panel-title">Detail Pelanggan <?=$survey->IDPel ?><a class="heading-elements-toggle"><i class="icon-more"></i></a></h5>
 														<div class="heading-elements">
 															<ul class="icons-list">
-						                		<li><a data-action="collapse"></a></li>
-						                		<li><a data-action="reload"></a></li>
-						                		<li><a data-action="close"></a></li>
+						                		
 						                	</ul>
 					                	</div>
 													</div>
@@ -62,10 +60,14 @@
 																	<label>Jumlah Lampu</label>
 																	<input type="text" class="form-control" value="<?=$survey->JumlahLampu?>">
 																</div>
+																<div class="form-group">
+																	<label>Daya</label>
+																	<input type="text" class="form-control" value="<?=$survey->Daya?>">
+																</div>
 
 																<div class="form-group">
 																	<label>Kondisi Box</label>
-																	<a data-fancybox href="http://2.bp.blogspot.com/-mZLmY8Q2GRY/U7eEVSJp0-I/AAAAAAAAAHI/EmLw5eJmPqc/s1600/LB+2+ISI+3+KWH+020.jpg"><img class="panel" src="http://2.bp.blogspot.com/-mZLmY8Q2GRY/U7eEVSJp0-I/AAAAAAAAAHI/EmLw5eJmPqc/s1600/LB+2+ISI+3+KWH+020.jpg" style="height:500px;"></a>
+																	<a style="width:10%;" data-fancybox href="<?=base_url().'assets/'.$survey->IDPel.'.jpg'?>"><img class="panel" src="<?=base_url().'assets/'.$survey->IDPel.'.jpg'?>" style="width:20%;"></a>
 																</div>
 
 															</fieldset>
@@ -116,6 +118,17 @@
 																		</div>
 																	</fieldset>
 																</div>
+																<div class="row">
+																	<fieldset>
+																		<legend class="text-bold">Hasil Ukur</legend>
+																		
+																		<div class="form-group">
+																			<label>CosPhi</label>
+																			<input type="text" class="form-control" value="<?=$survey->CosPhi?>">
+																		</div>
+																	<fieldset>
+																</div>
+
 															</div>
 														</div>
 														<div class="row">
