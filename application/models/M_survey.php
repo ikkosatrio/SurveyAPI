@@ -37,6 +37,13 @@ class M_survey extends CI_Model {
 		return $this->db->get($table);
 	}
 
+    function tampil_data_isi($where,$table){
+        $this->db->where($where);
+	    $this->db->from($table);
+
+        return $query = $this->db->get();
+    }
+
 	function update_data($where,$data,$table){
 		$this->db->where($where);
 		$this->db->update($table,$data);

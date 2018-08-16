@@ -31,6 +31,26 @@ class Survey extends CI_Controller {
 		}
 	}
 
+    public function gettotalwilayah()
+    {
+        $survey = $this->m_survey->tampil_data('Survey')->num_rows();
+
+        $where = array(
+            'Latitude !=' => 0,
+            'Longitude !=' => 0
+        );
+        $surveyisi = $this->m_survey->tampil_data_isi($where,'Survey')->num_rows();
+
+            $arr_survey = array(
+                "TotalData" => $survey,
+                "TotalDataIsi" => $surveyisi
+            );
+
+            echo $this->toJsonData(200,'Success',$arr_survey);
+            return;
+
+    }
+
 	public function savelampu()
 	{
 			$id_pel    = $this->input->get_post('Id_Pel');
@@ -93,39 +113,43 @@ class Survey extends CI_Controller {
 
 	public function savesurvey(){
 
-		$no        = $this->input->get_post('No');
-		$id_pel    = $this->input->get_post('Id_Pel');
-		$kwh       = $this->input->get_post('Kwh');
-		$mcb       = $this->input->get_post('Mcb');
-		$grnd      = $this->input->get_post('Ground');
-		$cospi   = $this->input->get_post('Cospi');
-		$standm    = $this->input->get_post('Stand');
-		$batas     = $this->input->get_post('Batas');
-		$switch    = $this->input->get_post('Switch');
-		$tgl       = $this->input->get_post('Tanggal');
-		$lat       = $this->input->get_post('Lat');
-		$ampere    = $this->input->get_post('Amp');
-		$kabkot    = $this->input->get_post('Kd_Kabupaten');
-		$nama      = $this->input->get_post('Nama');
-		$kondisi   = $this->input->get_post('Kondisi');
-		$wilayah   = $this->input->get_post('Wilayah');
-		$prov      = $this->input->get_post('Kd_Provinsi');
-		$lon       = $this->input->get_post('Long');
-		$ket       = $this->input->get_post('Ket');
-		$alamat    = $this->input->get_post('Alamat');
-		$kec       = $this->input->get_post('Kd_Kecamatan');
-		$jml_lp    = $this->input->get_post('Jumlah');
-		$jml_mcb   = $this->input->get_post('JumlahMCB');
-		$kontaktor = $this->input->get_post('Kontaktor');
-		$voltampere = $this->input->get_post('VoltAmpere');
-		$daya = $this->input->get_post('Daya');
-		$watt = $this->input->get_post('Watt');
+        $no        = $this->input->get_post('No');
+        $id_pel    = $this->input->get_post('Id_Pel');
+        $nama        = $this->input->get_post('Nama');
+        $alamat        = $this->input->get_post('Alamat');
+        $kwh       = $this->input->get_post('Kwh');
+        $mcb       = $this->input->get_post('Mcb');
+        $grnd      = $this->input->get_post('Ground');
+        $cospi   = $this->input->get_post('Cospi');
+        $standm    = $this->input->get_post('Stand');
+        $batas     = $this->input->get_post('Batas');
+        $switch    = $this->input->get_post('Switch');
+        $tgl       = $this->input->get_post('Tanggal');
+        $lat       = $this->input->get_post('Lat');
+        $ampere    = $this->input->get_post('Amp');
+        $kabkot    = $this->input->get_post('Kd_Kabupaten');
+        $nama      = $this->input->get_post('Nama');
+        $kondisi   = $this->input->get_post('Kondisi');
+        $wilayah   = $this->input->get_post('Wilayah');
+        $prov      = $this->input->get_post('Kd_Provinsi');
+        $lon       = $this->input->get_post('Long');
+        $ket       = $this->input->get_post('Ket');
+        $alamat    = $this->input->get_post('Alamat');
+        $kec       = $this->input->get_post('Kd_Kecamatan');
+        $jml_lp    = $this->input->get_post('Jumlah');
+        $jml_mcb   = $this->input->get_post('JumlahMCB');
+        $kontaktor = $this->input->get_post('Kontaktor');
+        $voltampere = $this->input->get_post('VoltAmpere');
+        $daya = $this->input->get_post('Daya');
+        $watt = $this->input->get_post('Watt');
+//        $wilayah = $this->input->get_post('Wilayah');
 
 
 
 
 
-		$where = array(
+
+        $where = array(
 			'IDPel' => $id_pel,
 		);
 
@@ -162,31 +186,42 @@ class Survey extends CI_Controller {
 				}
 			}
 
-			$data = array(
-				'KWhMeter'     => $kwh,
-				'MCB'          => $mcb,
-				'Grounding'    => $grnd,
-				'KondisiBox'   => $kondisi,
-				'StandKWH1'    => $standm,
-				'PembatasDaya' => $batas,
-				'Switchs'      => $switch,
-				'Tanggal1'     => $tgl,
-				'Latitude'     => $lat,
-				'Amphere'      => $ampere,
-				'Longitude'    => $lon,
-				'Keterangan'   => $ket,
-				'JumlahLampu'  => $jml_lp,
-				'JumlahMCB'    => $jml_mcb,
-				'Kontaktor'    => $kontaktor,
-				'CosPhi'	=> $cospi,
-				'VoltAmpere'    => $voltampere,
-				'Daya'    => $daya,
-				'Watt'    => $watt,
-			);
+            $data = array(
+                'NoUrut' => $no,
+                'IDPel' => $id_pel,
+                'KWhMeter'     => $kwh,
+                'MCB'          => $mcb,
+                'Grounding'    => $grnd,
+                'KondisiBox'   => $kondisi,
+                'StandKWH1'    => $standm,
+                'PembatasDaya' => $batas,
+                'Switchs'      => $switch,
+                'Tanggal1'     => $tgl,
+                'Latitude'     => $lat,
+                'Amphere'      => $ampere,
+                'Nama'      => $nama,
+                'Alamat'      => $alamat,
+                'Longitude'    => $lon,
+                'Keterangan'   => $ket,
+                'JumlahLampu'  => $jml_lp,
+                'JumlahMCB'    => $jml_mcb,
+                'Kontaktor'    => $kontaktor,
+                'CosPhi'	=> $cospi,
+                'VoltAmpere'    => $voltampere,
+                'Daya'    => $daya,
+                'Watt'    => $watt,
+                'Provinsi' => $prov,
+                'KabupatenKota' => $kabkot,
+                'Kecamatan' => $kec,
+                'Wilayah' => $wilayah,
+
+            );
+
+			//echo $switch
 
 			$survey = $this->m_survey->update_data($where,$data,'Survey');
 
-			echo $this->toJsonData(200,'Success',$survey);
+			echo $this->toJsonData(200,'Success'.$switch,$survey);
 			return;
 		}
 
@@ -271,6 +306,13 @@ class Survey extends CI_Controller {
 				'VoltAmpere'    => $voltampere,
 				'Daya'    => $daya,
 				'Watt'    => $watt,
+                'Provinsi' => $prov,
+                'KabupatenKota' => $kabkot,
+                'Kecamatan' => $kec,
+                'Nama' => $nama,
+                'Alamat' => $alamat,
+                'Wilayah' => $wilayah,
+
 			);
 
 			$survey = $this->m_survey->input_data($data,'Survey');
