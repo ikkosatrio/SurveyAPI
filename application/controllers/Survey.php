@@ -423,7 +423,53 @@ class Survey extends CI_Controller {
 	}
 
 	function addtiang(){
+        $request = $_REQUEST;
 
+        $where = array(
+            'IDPel' => $_REQUEST['IDPel'],
+        );
+
+        $survey = $this->m_survey->detail($where,'Survey')->row();
+
+        if (!$survey) {
+            echo $this->toJsonData(404,'Data Tidak Ada, ');
+            return;
+        }
+
+
+        $tiang = $this->m_tiang->input_data($request,'Tiang');
+        if (!empty($_FILES['FotoTiang']['name'])) {
+            $filename = 'assets/tiang/'.$tiang.".jpg";
+
+            if (file_exists($filename)) {
+                unlink('assets/tiang/'.$tiang.".jpg");
+            }
+
+            $upload 	= $this->upload('./assets/tiang/','FotoTiang',$tiang);
+
+
+            if($upload['auth']	== false){
+                echo $this->toJsonData(404,$upload['msg']);
+                return;
+            }
+
+
+            $fotoname 	= $upload['msg']['file_name'];
+            if(!empty($fotoname)){
+                // remFile(base_url().'assets/'.$id_pel.".jpg");
+                delete_files(base_url().'assets/'.$tiang.".jpg");
+            }
+        }
+
+        $where = array(
+            'IDTiang' => $tiang,
+        );
+
+        $tiang = $this->m_survey->detail($where,'Tiang')->row();
+
+
+        echo $this->toJsonData(200,'Success',$tiang);
+        return;
     }
 
     function addlampu(){
