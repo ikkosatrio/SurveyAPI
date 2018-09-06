@@ -6,6 +6,8 @@ class Survey extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('m_survey');
+        $this->load->model('m_lampu');
+        $this->load->model('m_tiang');
 	}
 
 	public function index()
@@ -419,6 +421,94 @@ class Survey extends CI_Controller {
 			return false;
 		}
 	}
+
+	function addtiang(){
+
+    }
+
+    function addlampu(){
+
+    }
+
+    function getjenistiang(){
+        $lampu = $this->m_lampu->tampil_data('JenisLampu')->result();
+
+        echo goResult(200,"Success",$lampu);
+        return;
+    }
+
+    function getjeniskabel(){
+        $lampu = $this->m_lampu->tampil_data('JenisKabel')->result();
+
+        echo goResult(200,"Success",$lampu);
+        return;
+    }
+
+
+	function getlampu(){
+
+        $where = array(
+            "IDTiang" => $this->input->get_post('IDTiang')
+        );
+
+        $lampu = $this->m_lampu->detail($where,'Lampu')->result();
+
+        $arrLampu = array();
+        foreach ($lampu as $row){
+
+            $where = array(
+                'IDTiang' => $row->IDTiang
+            );
+
+//            $row->Tiang = $this->m_tiang->detail($where,'Tiang')->row();
+
+            $where = array(
+                'IDJenisLampu' => $row->IDJenisLampu
+            );
+            $row->JenisLampu = $this->m_lampu->detail($where,'JenisLampu')->row();
+
+
+            $arrLampu[] = $row;
+        }
+
+        echo goResult(200,"Success",$arrLampu);
+        return;
+    }
+
+    function gettiang(){
+
+        $where = array(
+            "IDPel" => $this->input->get_post('IDPel')
+        );
+
+
+        $tiang = $this->m_lampu->detail($where,'Tiang')->result();
+
+        $arrTiang = array();
+        foreach ($tiang as $row){
+
+            $where = array(
+                'IDPel' => $row->IDPel
+            );
+
+            $row->Survey = $this->m_survey->detail($where,'Survey')->row();
+
+            $where = array(
+                'IDJenisTiang' => $row->IDJenisTiang
+            );
+            $row->JenisTiang = $this->m_survey->detail($where,'JenisTiang')->row();
+
+            $where = array(
+                'IDJenisKabel' => $row->IDJenisKabel
+            );
+            $row->JenisKabel = $this->m_survey->detail($where,'JenisKabel')->row();
+
+            $arrTiang[] = $row;
+        }
+
+        echo goResult(200,"Success",$arrTiang);
+        return;
+    }
 }
 
 /* End of file Survey.php */
