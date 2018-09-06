@@ -431,7 +431,7 @@ class Survey extends CI_Controller {
     }
 
     function getjenistiang(){
-        $lampu = $this->m_lampu->tampil_data('JenisLampu')->result();
+        $lampu = $this->m_lampu->tampil_data('JenisTiang')->result();
 
         echo goResult(200,"Success",$lampu);
         return;
