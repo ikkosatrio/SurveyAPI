@@ -25,6 +25,7 @@ class M_lampu extends CI_Model {
 
 	function input_data($data,$table){
 		$this->db->insert($table,$data);
+        return $this->db->insert_id();
 	}
 
 	function detail($where,$table){

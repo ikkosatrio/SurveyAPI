@@ -491,16 +491,86 @@ class Survey extends CI_Controller {
     }
 
 
-	function getlampu(){
+    function getlampu(){
+        $lampu = $this->m_lampu->tampil_data('Lampu')->result();
+
+        $arrLampu = array();
+        foreach ($lampu as $row){
+            $where = array(
+                'IDJenisLampu' => $row->IDJenisLampu
+            );
+
+            $row->JenisLampu = $this->m_lampu->detail($where,'JenisLampu')->row();
+            $arrLampu[] = $row;
+        }
+
+        echo goResult(200,"Success",$arrLampu);
+        return;
+    }
+
+    function addlampupju(){
+        $request = $_REQUEST;
+
+        $where = array(
+            'IDPel' => $_REQUEST['IDTiang'],
+        );
+
+        $tiang = $this->m_tiang->detail($where,'Tiang')->row();
+
+        if (!$tiang) {
+            echo $this->toJsonData(404,'Data Tidak Ada, ');
+            return;
+        }
+
+
+        $lampu = $this->m_lampu->input_data($request,'LampuPJU');
+        if (!empty($_FILES['FotoLampu']['name'])) {
+            $filename = 'assets/lampu/'.$lampu.".jpg";
+
+            if (file_exists($filename)) {
+                unlink('assets/lampu/'.$lampu.".jpg");
+            }
+
+            $upload 	= $this->upload('./assets/lampu/','FotoLampu',$lampu);
+
+
+            if($upload['auth']	== false){
+                echo $this->toJsonData(404,$upload['msg']);
+                return;
+            }
+
+
+            $fotoname 	= $upload['msg']['file_name'];
+            if(!empty($fotoname)){
+                // remFile(base_url().'assets/'.$id_pel.".jpg");
+                delete_files(base_url().'assets/'.$lampu.".jpg");
+            }
+        }
+
+        $where = array(
+            'IDLampuPJU' => $lampu,
+        );
+
+        $lampu = $this->m_survey->detail($where,'LampuPJU')->row();
+
+
+        echo $this->toJsonData(200,'Success',$lampu);
+        return;
+    }
+
+
+	function getlampupju(){
 
         $where = array(
             "IDTiang" => $this->input->get_post('IDTiang')
         );
 
-        $lampu = $this->m_lampu->detail($where,'Lampu')->result();
+        $lampu = $this->m_lampu->detail($where,'LampuPJU')->result();
 
         $arrLampu = array();
         foreach ($lampu as $row){
+
+            $row->KondisiLampu =  base_url('assets')."/lampu/".$row->KondisiLampu;
 
             $where = array(
                 'IDTiang' => $row->IDTiang
@@ -509,10 +579,16 @@ class Survey extends CI_Controller {
 //            $row->Tiang = $this->m_tiang->detail($where,'Tiang')->row();
 
             $where = array(
-                'IDJenisLampu' => $row->IDJenisLampu
+                'IDLampu' => $row->IDLampu
             );
-            $row->JenisLampu = $this->m_lampu->detail($where,'JenisLampu')->row();
+            $objlampu = $this->m_lampu->detail($where,'Lampu')->row();
 
+            $where = array(
+                'IDJenisLampu' => $objlampu->IDJenisLampu
+            );
+
+            $objlampu->JenisLampu = $this->m_lampu->detail($where,'JenisLampu')->row();
+            $row->Lampu = $objlampu;
 
             $arrLampu[] = $row;
         }
