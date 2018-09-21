@@ -56,31 +56,37 @@ INSERT INTO `JenisTiang` (`IDJenisTiang`, `NmJenisTiang`, `NmJenisTiangPDK`, `FA
 -- Dumping structure for table dbsurvey.Lampu
 CREATE TABLE IF NOT EXISTS `Lampu` (
   `IDLampu` int(11) NOT NULL AUTO_INCREMENT,
-  `IDTiang` int(11) NOT NULL DEFAULT '0',
   `IDJenisLampu` int(11) NOT NULL DEFAULT '0',
-  `KondisiLampu` varchar(255) NOT NULL DEFAULT '0',
-  `LatitudeLampu` double NOT NULL DEFAULT '0',
-  `LongitudeLampu` double NOT NULL DEFAULT '0',
   `WattLampu` int(11) NOT NULL DEFAULT '0',
   `VALampu` int(11) NOT NULL DEFAULT '0',
+  `FAktif` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`IDLampu`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table dbsurvey.Lampu: ~3 rows (approximately)
 /*!40000 ALTER TABLE `Lampu` DISABLE KEYS */;
-INSERT INTO `Lampu` (`IDLampu`, `IDTiang`, `IDJenisLampu`, `KondisiLampu`, `LatitudeLampu`, `LongitudeLampu`, `WattLampu`, `VALampu`) VALUES
-	(1, 1, 1, 'test', -7.321225, 112.76889, 0, 0),
-	(2, 1, 1, 'test2', -7.3188414, 112.7776473, 0, 0),
-	(3, 1, 1, 'test3', -7.314054, 112.775857, 0, 0);
+INSERT INTO `Lampu` (`IDLampu`, `IDJenisLampu`, `WattLampu`, `VALampu`, `FAktif`) VALUES
+	(1, 1, 100, 100, 100),
+	(2, 1, 200, 200, 2000),
+	(3, 1, 300, 300, 300);
 /*!40000 ALTER TABLE `Lampu` ENABLE KEYS */;
 
 -- Dumping structure for table dbsurvey.LampuPJU
 CREATE TABLE IF NOT EXISTS `LampuPJU` (
-  `IDLammPJU` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `IDLampuPJU` int(11) NOT NULL AUTO_INCREMENT,
+  `IDTiang` int(11) DEFAULT NULL,
+  `IDLampu` int(11) DEFAULT NULL,
+  `KondisiLampu` varchar(50) DEFAULT NULL,
+  `Jumlah` int(11) DEFAULT NULL,
+  PRIMARY KEY (`IDLampuPJU`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table dbsurvey.LampuPJU: ~0 rows (approximately)
+-- Dumping data for table dbsurvey.LampuPJU: ~3 rows (approximately)
 /*!40000 ALTER TABLE `LampuPJU` DISABLE KEYS */;
+INSERT INTO `LampuPJU` (`IDLampuPJU`, `IDTiang`, `IDLampu`, `KondisiLampu`, `Jumlah`) VALUES
+	(1, 5, 1, '3.jpg', 10),
+	(2, 5, 2, '3.jpg', 56),
+	(3, 5, 1, '3.jpg', 5);
 /*!40000 ALTER TABLE `LampuPJU` ENABLE KEYS */;
 
 -- Dumping structure for table dbsurvey.Survey
@@ -109,6 +115,8 @@ CREATE TABLE IF NOT EXISTS `Survey` (
   `Amphere` double DEFAULT NULL,
   `VoltAmpere` double DEFAULT NULL,
   `Watt` double DEFAULT NULL,
+  `KabelInner` varchar(50) DEFAULT NULL,
+  `KabelOuter` varchar(50) DEFAULT NULL,
   `Tanggal1` datetime DEFAULT NULL,
   `Tanggal2` datetime DEFAULT NULL,
   `StandKWH1` double DEFAULT NULL,
@@ -119,11 +127,11 @@ CREATE TABLE IF NOT EXISTS `Survey` (
 
 -- Dumping data for table dbsurvey.Survey: ~4 rows (approximately)
 /*!40000 ALTER TABLE `Survey` DISABLE KEYS */;
-INSERT INTO `Survey` (`NoUrut`, `IDPel`, `Nama`, `Provinsi`, `KabupatenKota`, `Kecamatan`, `Alamat`, `Wilayah`, `Daya`, `JumlahLampu`, `KWhMeter`, `PembatasDaya`, `MCB`, `JumlahMCB`, `Kontaktor`, `Switchs`, `Grounding`, `KondisiBox`, `Latitude`, `Longitude`, `CosPhi`, `Amphere`, `VoltAmpere`, `Watt`, `Tanggal1`, `Tanggal2`, `StandKWH1`, `StandKWH2`, `Keterangan`) VALUES
-	(1, 1, 'Ikko', '0', '0', '0', 'asd', 'Surabaya', 100, 12, 'Ada', 'Ada', 'Berfungsi', 10, 'Ada', 'Belum Pilih', 'Ada', '==[Pilih Kondisi]==', -7.31404930, 112.77535560, 12, 12, 12, 12, '0000-00-00 00:00:00', '2018-05-13 22:16:25', 12, 12, 'Berfungsi'),
-	(NULL, 2, '', '', '', '', '', NULL, NULL, NULL, 'Belum Pilih', 'Belum Pilih', 'Belum Pilih', NULL, 'Belum Pilih', 'Belum Pilih', 'Belum Pilih', NULL, 0.00000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Belum Pilih'),
-	(NULL, 3, '', '', '', '', '', NULL, NULL, NULL, 'Belum Pilih', 'Belum Pilih', 'Belum Pilih', NULL, 'Belum Pilih', 'Belum Pilih', 'Belum Pilih', NULL, 0.00000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Belum Pilih'),
-	(4, 5, 'ikkoo', 'test', 'tost', 'kexmem', 'kedung', 'Surabaya', 200, 2, 'Berfungsi', 'Berfungsi', 'Berfungsi', 45, 'Berfungsi', 'PHOTO_CELL', 'Ada', '==[Pilih Kondisi]==', -7.31410510, 112.77533280, 2, 2, 5, 5, '0002-11-30 00:00:00', NULL, 5, NULL, 'Berfungsi');
+INSERT INTO `Survey` (`NoUrut`, `IDPel`, `Nama`, `Provinsi`, `KabupatenKota`, `Kecamatan`, `Alamat`, `Wilayah`, `Daya`, `JumlahLampu`, `KWhMeter`, `PembatasDaya`, `MCB`, `JumlahMCB`, `Kontaktor`, `Switchs`, `Grounding`, `KondisiBox`, `Latitude`, `Longitude`, `CosPhi`, `Amphere`, `VoltAmpere`, `Watt`, `KabelInner`, `KabelOuter`, `Tanggal1`, `Tanggal2`, `StandKWH1`, `StandKWH2`, `Keterangan`) VALUES
+	(1, 1, 'Ikko', '0', '0', '0', 'asd', 'Surabaya', 100, 12, 'Ada', 'Ada', 'Berfungsi', 10, 'Ada', 'Belum Pilih', 'Ada', '==[Pilih Kondisi]==', -7.31404930, 112.77535560, 12, 12, 12, 12, NULL, NULL, '0000-00-00 00:00:00', '2018-05-13 22:16:25', 12, 12, 'Berfungsi'),
+	(NULL, 2, '', '', '', '', '', NULL, NULL, NULL, 'Belum Pilih', 'Belum Pilih', 'Belum Pilih', NULL, 'Belum Pilih', 'Belum Pilih', 'Belum Pilih', NULL, 0.00000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Belum Pilih'),
+	(NULL, 3, '', '', '', '', '', NULL, NULL, NULL, 'Belum Pilih', 'Belum Pilih', 'Belum Pilih', NULL, 'Belum Pilih', 'Belum Pilih', 'Belum Pilih', NULL, 0.00000000, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Belum Pilih'),
+	(4, 5, 'ikkoo', 'test', 'tost', 'kexmem', 'kedung', 'Surabaya', 200, 2, 'Berfungsi', 'Berfungsi', 'Berfungsi', 45, 'Berfungsi', 'PHOTO_CELL', 'Ada', '==[Pilih Kondisi]==', -7.31410510, 112.77533280, 2, 2, 5, 5, NULL, NULL, '0002-11-30 00:00:00', NULL, 5, NULL, 'Berfungsi');
 /*!40000 ALTER TABLE `Survey` ENABLE KEYS */;
 
 -- Dumping structure for table dbsurvey.Tiang
@@ -138,12 +146,14 @@ CREATE TABLE IF NOT EXISTS `Tiang` (
   `FotoTiang` varchar(50) DEFAULT NULL,
   `StatusTiang` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`IDTiang`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
--- Dumping data for table dbsurvey.Tiang: ~1 rows (approximately)
+-- Dumping data for table dbsurvey.Tiang: ~3 rows (approximately)
 /*!40000 ALTER TABLE `Tiang` DISABLE KEYS */;
 INSERT INTO `Tiang` (`IDTiang`, `IDPel`, `IDJenisTiang`, `IDJenisKabel`, `LatitudeTiang`, `LongitudeTiang`, `KeteranganTiang`, `FotoTiang`, `StatusTiang`) VALUES
-	(1, 5, 1, 1, 1, 1, 'qwe', '1', '1');
+	(5, 5, 1, 1, -7.3140414, 112.7753242, 'true', NULL, 'TERSEBAR'),
+	(6, 5, 0, 1, -7.3140433, 112.7753259, 'true', NULL, 'GROUP'),
+	(7, 5, 1, 1, -7.314044, 112.7753256, 'true', NULL, 'TERSEBAR');
 /*!40000 ALTER TABLE `Tiang` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

@@ -144,6 +144,10 @@ class Survey extends CI_Controller {
         $voltampere = $this->input->get_post('VoltAmpere');
         $daya = $this->input->get_post('Daya');
         $watt = $this->input->get_post('Watt');
+
+        $inner = $this->input->get_post('KabelInner');
+        $outer = $this->input->get_post('KabelOuter');
+
 //        $wilayah = $this->input->get_post('Wilayah');
 
 
@@ -216,6 +220,8 @@ class Survey extends CI_Controller {
                 'KabupatenKota' => $kabkot,
                 'Kecamatan' => $kec,
                 'Wilayah' => $wilayah,
+                'KabelInner' => $inner,
+                'KabelOuter' => $outer,
 
             );
 
@@ -260,6 +266,9 @@ class Survey extends CI_Controller {
 		$voltampere = $this->input->get_post('VoltAmpere');
 		$daya = $this->input->get_post('Daya');
 		$watt = $this->input->get_post('Watt');
+
+        $inner = $this->input->get_post('KabelInner');
+        $outer = $this->input->get_post('KabelOuter');
 
 		if (!empty($_FILES['Foto']['name'])) {
 			$filename = 'assets/'.$id_pel.".jpg";
@@ -314,6 +323,8 @@ class Survey extends CI_Controller {
                 'Nama' => $nama,
                 'Alamat' => $alamat,
                 'Wilayah' => $wilayah,
+                'KabelInner' => $inner,
+                'KabelOuter' => $outer,
 
 			);
 
@@ -325,14 +336,35 @@ class Survey extends CI_Controller {
 
 	}
 
+    public function savesurvey2()
+    {
+        $id_pel = $this->input->get_post('Id_Pel');
+
+        if (!$id_pel) {
+			echo $this->toJsonData(404,'Kirim no/id pelanggan nya');
+			return;
+        }
+
+        $where = array(
+            'IDPel' => $id_pel,
+        );
+
+        $data = $_REQUEST;
+
+        $survey = $this->m_survey->update_data($where,$data,'Survey')->row();
+
+        echo $this->toJsonData(200,'Success',$survey);
+        return;
+    }
+
 	public function getdatasurvey()
 	{
 		$no     = $this->input->get_post('No');
-		// $id_pel = $this->input->get_post('Id_Pel');
+		 $id_pel = $this->input->get_post('Id_Pel');
 
 		if (!$no) {
-			echo $this->toJsonData(404,'Kirim no/id pelanggan nya');
-			return;
+//			echo $this->toJsonData(404,'Kirim no/id pelanggan nya');
+//			return;
 		}
 
 		$where = array(
@@ -343,7 +375,7 @@ class Survey extends CI_Controller {
 
 		if (!$survey) {
 			$where = array(
-				'IDPel' => $no,
+				'IDPel' => $id_pel,
 			);
 			$survey = $this->m_survey->detail($where,'Survey')->row();
 			if (!$survey) {
