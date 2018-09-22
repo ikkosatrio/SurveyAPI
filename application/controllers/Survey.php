@@ -351,7 +351,9 @@ class Survey extends CI_Controller {
 
         $data = $_REQUEST;
 
-        $survey = $this->m_survey->update_data($where,$data,'Survey')->row();
+        unset($data['Id_Pel']);
+
+        $survey = $this->m_survey->update_data($where,$data,'Survey');
 
         echo $this->toJsonData(200,'Success',$survey);
         return;
