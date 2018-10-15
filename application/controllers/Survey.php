@@ -126,7 +126,7 @@ class Survey extends CI_Controller {
         $standm    = $this->input->get_post('Stand');
         $batas     = $this->input->get_post('Batas');
         $switch    = $this->input->get_post('Switch');
-        $tgl       = $this->input->get_post('Tanggal');
+        $tgl       = $this->input->get_post('Tanggal1');
         $lat       = $this->input->get_post('Lat');
         $ampere    = $this->input->get_post('Amp');
         $kabkot    = $this->input->get_post('Kd_Kabupaten');
@@ -228,8 +228,9 @@ class Survey extends CI_Controller {
 			//echo $switch
 
 			$survey = $this->m_survey->update_data($where,$data,'Survey');
+            $survey = $this->m_survey->detail($where,'Survey')->row();
 
-			echo $this->toJsonData(200,'Success'.$switch,$survey);
+			echo $this->toJsonData(200,'Success',$survey);
 			return;
 		}
 
@@ -456,12 +457,14 @@ class Survey extends CI_Controller {
 		}
 	}
 
-	function addtiang(){
+    function edittiang(){
         $request = $_REQUEST;
 
         $where = array(
             'IDPel' => $_REQUEST['IDPel'],
         );
+
+        $idpel = $_REQUEST['IDPel'];
 
         $survey = $this->m_survey->detail($where,'Survey')->row();
 
@@ -471,12 +474,16 @@ class Survey extends CI_Controller {
         }
 
 
-        $tiang = $this->m_tiang->input_data($request,'Tiang');
+        $wheretiang = array(
+            'IDTiang' => $_REQUEST['IDTiang'],
+        );
+
+        $tiang = $this->m_tiang->detail($wheretiang,'Tiang')->row();
         if (!empty($_FILES['FotoTiang']['name'])) {
-            $filename = 'assets/tiang/'.$tiang.".jpg";
+            $filename = 'assets/tiang/'.$idpel.'-'.$tiang.".jpg";
 
             if (file_exists($filename)) {
-                unlink('assets/tiang/'.$tiang.".jpg");
+                unlink('assets/tiang/'.$idpel.'-'.$tiang.".jpg");
             }
 
             $upload 	= $this->upload('./assets/tiang/','FotoTiang',$tiang);
@@ -491,7 +498,59 @@ class Survey extends CI_Controller {
             $fotoname 	= $upload['msg']['file_name'];
             if(!empty($fotoname)){
                 // remFile(base_url().'assets/'.$id_pel.".jpg");
-                delete_files(base_url().'assets/'.$tiang.".jpg");
+                delete_files(base_url().'assets/tiang/'.$idpel.'-'.$tiang.".jpg");
+            }
+        }
+
+        $where = array(
+            'IDTiang' => $tiang,
+        );
+
+        $tiang = $this->m_survey->detail($where,'Tiang')->row();
+
+
+        echo $this->toJsonData(200,'Success',$tiang);
+        return;
+    }
+
+	function addtiang(){
+        $request = $_REQUEST;
+
+        $where = array(
+            'IDPel' => $_REQUEST['IDPel'],
+        );
+
+        $idpel = $_REQUEST['IDPel'];
+
+        $survey = $this->m_survey->detail($where,'Survey')->row();
+
+        if (!$survey) {
+            echo $this->toJsonData(404,'Data Tidak Ada, ');
+            return;
+        }
+
+
+        $tiang = $this->m_tiang->input_data($request,'Tiang');
+        if (!empty($_FILES['FotoTiang']['name'])) {
+            $filename = 'assets/tiang/'.$idpel.'-'.$tiang.".jpg";
+
+            if (file_exists($filename)) {
+                unlink('assets/tiang/'.$idpel.'-'.$tiang.".jpg");
+            }
+
+            $upload 	= $this->upload('./assets/tiang/','FotoTiang',$tiang);
+
+
+            if($upload['auth']	== false){
+                echo $this->toJsonData(404,$upload['msg']);
+                return;
+            }
+
+
+            $fotoname 	= $upload['msg']['file_name'];
+            if(!empty($fotoname)){
+                // remFile(base_url().'assets/'.$id_pel.".jpg");
+                delete_files(base_url().'assets/tiang/'.$idpel.'-'.$tiang.".jpg");
             }
         }
 
